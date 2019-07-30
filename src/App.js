@@ -5,16 +5,26 @@ import size from './size';
 const FlexContainer = styled.div`
   padding: 30px;
   text-align: center;
+  background-color: black;
+  height: 100%;
 `
 const TimeBoxWrapper = styled.div`  
   margin: 10px;
   text-align: center;
   font-size: ${size.FONT.LARGE}px;
+  color: white;
 `
 const BinaryClockWrapper = styled.div`
   margin: 10px;
   font-size: ${size.FONT.EXTRALARGE}px;
   text-align: center;
+`
+
+const AquaSpan = styled.span`
+  color: rgb(18%, 85.9%, 80.8%);
+`
+const GraySpan = styled.span`
+  color: gray;
 `
 
 class App extends React.Component {
@@ -70,9 +80,9 @@ class App extends React.Component {
     const list = []
     for (let i = 0; i < bin8.length; i++) {
       if (bin8.substr(i, 1) === '0') {
-        list.push(<span>○</span>);
+        list.push(<GraySpan>●</GraySpan>);
       } else {
-        list.push(<span>●</span>);
+        list.push(<AquaSpan>●</AquaSpan>);
       }
     }
     return list
