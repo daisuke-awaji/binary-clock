@@ -1,39 +1,39 @@
-import React from 'react';
-import styled from 'styled-components';
-import size from './size';
+import React from "react";
+import styled from "styled-components";
+import size from "./size";
 
 const FlexContainer = styled.div`
   padding: 30px;
   text-align: center;
   background-color: black;
   height: 100%;
-`
-const TimeBoxWrapper = styled.div`  
+`;
+const TimeBoxWrapper = styled.div`
   margin: 10px;
   text-align: center;
   font-size: ${size.FONT.LARGE}px;
   color: white;
-`
+`;
 const BinaryClockWrapper = styled.div`
   margin: 10px;
   font-size: ${size.FONT.EXTRALARGE}px;
   text-align: center;
-`
+`;
 
 const AquaSpan = styled.span`
   color: rgb(18%, 85.9%, 80.8%);
-`
+`;
 const GraySpan = styled.span`
   color: gray;
-`
+`;
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hh: '',
-      mm: '',
-      ss: '',
+      hours: "",
+      minutes: "",
+      seconds: "",
       lines: []
     };
     // updateメソッドがstateを更新できるようにするためにbindしておく
@@ -43,49 +43,49 @@ class App extends React.Component {
 
   update() {
     const now = new Date();
-    const hh = this._padNumbersWithZero(now.getHours());
-    const mm = this._padNumbersWithZero(now.getMinutes());
-    const ss = this._padNumbersWithZero(now.getSeconds());
-    const lines = this._calculateBinaryClock(hh + mm + ss);
+    const hours = this._padNumbersWithZero(now.getHours());
+    const minutes = this._padNumbersWithZero(now.getMinutes());
+    const seconds = this._padNumbersWithZero(now.getSeconds());
+    const lines = this._calculateBinaryClock(hours + minutes + seconds);
 
     this.setState({
-      hh: hh,
-      mm: mm,
-      ss: ss,
+      hours: hours,
+      minutes: minutes,
+      seconds: seconds,
       lines: lines
-    })
+    });
   }
 
   _padNumbersWithZero(s) {
     s = "00" + s;
-    return s.substr(s.length - 2, 2)
+    return s.substr(s.length - 2, 2);
   }
 
-  _calculateBinaryClock(hhmmss) {
+  _calculateBinaryClock(hms) {
     const lines = [];
-    for (let i = 0; i < hhmmss.length; i++) {
+    for (let i = 0; i < hms.length; i++) {
       // 1文字ずつ抽出
-      const v = parseInt(hhmmss.substr(i, 1));
+      const v = parseInt(hms.substr(i, 1));
       // 2進数に変換して4桁に揃える
       const bin = "0000" + v.toString(2);
       const bin8 = bin.substr(bin.length - 4, 4);
       // 0, 1を記号に変換する
-      lines.push(this.replaceZeroOneToViewObject(bin8));
-      lines.push(<br />)
+      lines.push(this._replaceZeroOneToViewObject(bin8));
+      lines.push(<br key={i} />);
     }
     return lines;
   }
 
-  replaceZeroOneToViewObject(bin8) {
-    const list = []
+  _replaceZeroOneToViewObject(bin8) {
+    const list = [];
     for (let i = 0; i < bin8.length; i++) {
-      if (bin8.substr(i, 1) === '0') {
-        list.push(<GraySpan>●</GraySpan>);
+      if (bin8.substr(i, 1) === "0") {
+        list.push(<GraySpan key={i}>●</GraySpan>);
       } else {
-        list.push(<AquaSpan>●</AquaSpan>);
+        list.push(<AquaSpan key={i}>●</AquaSpan>);
       }
     }
-    return list
+    return list;
   }
 
   componentDidMount() {
@@ -96,11 +96,11 @@ class App extends React.Component {
     return (
       <FlexContainer>
         <TimeBoxWrapper>
-          {this.state.hh ? this.state.hh : '--'}:{this.state.mm ? this.state.mm : '--'}:{this.state.ss ? this.state.ss : '--'}
+          {this.state.hours ? this.state.hours : "--"}:
+          {this.state.minutes ? this.state.minutes : "--"}:
+          {this.state.seconds ? this.state.seconds : "--"}
         </TimeBoxWrapper>
-        <BinaryClockWrapper>
-          {this.state.lines}
-        </BinaryClockWrapper>
+        <BinaryClockWrapper>{this.state.lines}</BinaryClockWrapper>
       </FlexContainer>
     );
   }
